@@ -2,7 +2,7 @@ package Catmandu::Inspire;
 
 =head1 NAME
 
-Catmandu::Inspire - Catmandu modules for working with ArXiv data.
+Catmandu::Inspire - Catmandu modules for working with Inspire data.
 
 =head1 VERSION
 

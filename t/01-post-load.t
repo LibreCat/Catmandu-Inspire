@@ -7,7 +7,7 @@ use Test::Exception;
 
 my $pkg;
 BEGIN {
-  $pkg = 'Catmandu::Importer::ArXiv';
+  $pkg = 'Catmandu::Importer::Inspire';
   use_ok($pkg);
 }
 require_ok($pkg);
@@ -16,7 +16,7 @@ my %attrs = (
   query => 'all:electron'
 );
 
-my $importer = Catmandu::Importer::ArXiv->new(%attrs);
+my $importer = Catmandu::Importer::Inspire->new(%attrs);
 
 isa_ok($importer, $pkg);
 

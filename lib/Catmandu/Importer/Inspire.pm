@@ -3,7 +3,7 @@ package Catmandu::Importer::Inspire;
 use Catmandu::Sane;
 use Moo;
 use Furl;
-use XML::LibXML::Simple qw(XMLin);
+use XML::Simple qw(XMLin);
 
 with 'Catmandu::Importer';
 
@@ -22,16 +22,16 @@ use constant BASE_URL => 'http://inspirehep.net/';
 
 # required.
 has base => (is => 'ro', default => sub { return BASE_URL; });
-has query => (is => 'ro', required => 1);
+#has query => (is => 'ro', required => 1);
 
 # optional.
 has id => (is => 'ro');
 
 # internal stuff.
-has _currentRecordSet => (is => 'ro');
-has _n => (is => 'ro', default => sub { 0 });
-has _start => (is => 'ro', default => sub { 0 });
-has _max_results => (is => 'ro', default => sub { 10 });
+#has _currentRecordSet => (is => 'ro');
+#has _n => (is => 'ro', default => sub { 0 });
+#has _start => (is => 'ro', default => sub { 0 });
+#has _max_results => (is => 'ro', default => sub { 10 });
 
 
 # Internal Methods. ------------------------------------------------------------
@@ -63,11 +63,9 @@ sub _request {
 sub _hashify {
   my ($self, $in) = @_;
 
-  my $xs = XML::LibXML::Simple->new();
+  my $xs = XML::Simple->new();
   my $out = $xs->XMLin(
 	  $in, 
-	  KeyAttr => [], 
-	  ForceArray => [ 'entry' ]
   );
 
   return $out;
@@ -81,10 +79,7 @@ sub _call {
 
   # construct the url
   my $url = $self->base;
-#  $url .= '?search_query='.$self->query;
-  $url .= '&id='.$self->id if $self->id;
-#  $url .= '&start='.$self->_start if $self->_start;
-#  $url .= '&max_results='.$self->_max_results if $self->_max_results;
+  $url .= 'record/'.$self->id . '/export/xe' if $self->id;
 
   # http get the url.
   my $res = $self->_request($url);
@@ -96,7 +91,7 @@ sub _call {
 # Internal: gets the next set of results.
 #
 # Returns a array representation of the resultset.
-sub _getRecord {
+sub _get_record {
   my ($self) = @_;
   
   # fetch the xml response and hashify it.
@@ -104,19 +99,25 @@ sub _getRecord {
   my $hash = $self->_hashify($xml);
 
   # get to the point.
-  my $set = $hash->{entry};
+ # my $set = $hash->{entry};
 
   # return a reference to a array.
-  return \@{$set};
+  return $hash;
 }
 
 # Public Methods. --------------------------------------------------------------
 
 sub generator {
   my ($self) = @_;
+  my $return = 1;
 
   return sub {
-    $self->_getRecord;
+	# hack to make iterator stop.
+	if ($return) {
+		$return = 0;
+		return $self->_get_record;
+	}
+	return undef;
   };
 }
 

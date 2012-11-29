@@ -6,7 +6,7 @@ use Test::More;
 
 my $pkg;
 BEGIN {
-    $pkg = 'Catmandu::Importer::ArXiv';
+    $pkg = 'Catmandu::Importer::Inspire';
     use_ok $pkg;
 }
 
