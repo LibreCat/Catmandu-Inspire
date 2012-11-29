@@ -16,24 +16,30 @@ with 'Catmandu::Importer';
 # Constants. -------------------------------------------------------------------
 
 use constant BASE_URL => 'http://inspirehep.net/';
-
+use constant DEFAULT_FORMAT => 'endnote';
 
 # Properties. ------------------------------------------------------------------
 
 # required.
 has base => (is => 'ro', default => sub { return BASE_URL; });
-#has query => (is => 'ro', required => 1);
-
-# optional.
+has format => (is => 'ro', default => sub { return DEFAULT_FORMAT; });
 has id => (is => 'ro');
 
+# optional.
+
+
 # internal stuff.
-#has _currentRecordSet => (is => 'ro');
+#hasd _currentRecordSet => (is => 'ro');
 #has _n => (is => 'ro', default => sub { 0 });
 #has _start => (is => 'ro', default => sub { 0 });
 #has _max_results => (is => 'ro', default => sub { 10 });
 
-
+# Mapping
+my %FORMAT_MAPPING = (
+    'endnote' => 'xe',
+    'nlm' => 'xn',
+    'marc' => 'xm',
+    );
 # Internal Methods. ------------------------------------------------------------
 
 # Internal: HTTP GET something.
@@ -79,7 +85,8 @@ sub _call {
 
   # construct the url
   my $url = $self->base;
-  $url .= 'record/'.$self->id . '/export/xe' if $self->id;
+  my $fmt = $FORMAT_MAPPING{$self->format};
+    $url .= 'record/'.$self->id . '/export/' . $fmt;
 
   # http get the url.
   my $res = $self->_request($url);
@@ -90,7 +97,7 @@ sub _call {
 
 # Internal: gets the next set of results.
 #
-# Returns a array representation of the resultset.
+# Returns a hash representation of the resultset.
 sub _get_record {
   my ($self) = @_;
   
@@ -98,10 +105,7 @@ sub _get_record {
   my $xml = $self->_call;
   my $hash = $self->_hashify($xml);
 
-  # get to the point.
- # my $set = $hash->{entry};
-
-  # return a reference to a array.
+  # return a reference to a hash.
   return $hash;
 }
 
@@ -133,7 +137,8 @@ sub generator {
   use Catmandu::Importer::Inspire;
 
   my %attrs = (
-    query => 'all:electron'
+    id => '1203476',
+    format => 'endnote',
   );
 
   my $importer = Catmandu::Importer::Inspire->new(%attrs);

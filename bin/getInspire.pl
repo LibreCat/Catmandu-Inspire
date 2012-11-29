@@ -7,7 +7,7 @@ use Data::Dumper;
 
 while (<>) {
 	chomp;
-	my $imp = Catmandu::Importer::Inspire->new({id => $_});
+	my $imp = Catmandu::Importer::Inspire->new({id => $_, format => 'marc'});
 	$imp->each( sub {
 		print Dumper $_[0];
 	});
