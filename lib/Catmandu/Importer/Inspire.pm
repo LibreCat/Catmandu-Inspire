@@ -23,7 +23,7 @@ use constant DEFAULT_FORMAT => 'endnote';
 # required.
 has base => (is => 'ro', default => sub { return BASE_URL; });
 has format => (is => 'ro', default => sub { return DEFAULT_FORMAT; });
-has id => (is => 'ro');
+has id => (is => 'ro', required => 1);
 
 # optional.
 
@@ -86,7 +86,7 @@ sub _call {
   # construct the url
   my $url = $self->base;
   my $fmt = $FORMAT_MAPPING{$self->format};
-    $url .= 'record/'.$self->id . '/export/' . $fmt;
+  $url .= 'record/'.$self->id . '/export/' . $fmt;
 
   # http get the url.
   my $res = $self->_request($url);
