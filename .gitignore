@@ -1,3 +1,4 @@
+!.gitignore
 blib/
 .build/
 _build/
@@ -9,7 +10,7 @@ Build.bat
 .last_cover_stats
 Makefile
 Makefile.old
-MANIFEST.bak
+MANIFEST*
 META*
 MYMETA*
 nytprof.out
