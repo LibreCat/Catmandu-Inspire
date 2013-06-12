@@ -17,10 +17,9 @@ my $builder = Module::Build->new(
     },
     requires => {
         'perl' => '5.10.1',
-        'Catmandu' => '0.0302',
+        'Catmandu' => '0.2003',
         'Furl' => '0.41',
-        'XML::Simple' => 2.20'
-        'Moo' => '1.000003',
+        'XML::Simple' => '2.20'
     },
     add_to_cleanup => [qw(
         Catmandu-Inspire*
