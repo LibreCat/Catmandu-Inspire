@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Exception;
-
+use lib qw(lib);
 my $pkg;
 BEGIN {
   $pkg = 'Catmandu::Importer::Inspire';
@@ -13,7 +13,7 @@ BEGIN {
 require_ok($pkg);
 
 my %attrs = (
-  query => 'all:electron'
+  id => '1192938'
 );
 
 my $importer = Catmandu::Importer::Inspire->new(%attrs);
