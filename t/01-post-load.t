@@ -10,14 +10,13 @@ BEGIN {
   $pkg = 'Catmandu::Importer::Inspire';
   use_ok($pkg);
 }
-require_ok($pkg);
 
 my $importer_id = Catmandu::Importer::Inspire->new(id => "1192938", format => "marc");
 isa_ok($importer_id, $pkg);
 can_ok($importer_id, 'each');
 
-my $importer_query = Catmandu::Importer::Inspire->new(format => "dc", query => "doi:10.1103/PhysRevLett.105.026802");
+my $importer_query = Catmandu::Importer::Inspire->new(format => "dc", doi => "10.1103/PhysRevLett.105.026802");
 isa_ok($importer_id, $pkg);
 can_ok($importer_id, 'each');
 
-done_testing 6;
+done_testing 5;
