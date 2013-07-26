@@ -6,7 +6,7 @@ Catmandu::Inspire - Catmandu modules for working with Inspire data.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.1
 
 =cut
 
@@ -24,7 +24,7 @@ our $VERSION = '0.1';
 
 =over
 
-=item * Vitali Peil, C<< <vitali.peil@uni-bielefeld.de> >>
+=item * Vitali Peil, C<< <vitali.peil at uni-bielefeld.de> >>
 
 =back
 
