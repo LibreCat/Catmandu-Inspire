@@ -3,6 +3,7 @@ package Catmandu::Fix::inspire;
 use Catmandu::Sane;
 use Moo;
 
+our $VERSION = '0.151';
 
 sub fix {
   my ( $self, $pub ) = @_;
@@ -19,6 +20,13 @@ sub fix {
 
 
     foreach my $datafield ( @{ $pub->{record}->{datafield} } ) {
+      if ($datafield->{tag} eq "024") {
+        foreach my $sf ( @{ $datafield->{subfield} } ) {
+          if ( $sf->{code} eq 'a' ) {
+            $rec->doi = $sf->{content};
+          }
+        }
+      }
       next unless $datafield->{tag} eq "035";
       if ( ref $datafield->{subfield} eq "ARRAY" ) {
         my $temphash;
@@ -82,3 +90,26 @@ sub fix {
 }
 
 1;
+
+=head1 NAME
+
+Catmandu::Fix::inspire - a Catmandu Fix, which filters appropriate fields, e.g doi, arxivId, etc.
+
+=head1 SYNOPSIS
+
+  use Catmandu::Fix::inspire;
+  use Catmandu::Importer::Inspire;
+
+  my $fixer = Catmandu::Fix->new(fixes => ['inspire()']);
+  
+  # get data via doi
+  my $importer = Catmandu::Importer::Inspire->new(format => 'marc', doi => "10.1088/1126-6708/2009/03/112");
+  # or via inspire id
+  #my $importer = Catmandu::Importer::Inspire->new(format => 'marc', id => "811388");
+  
+  # gives an interable object $newRec;
+  my $newRec = $fixer->fix($importer);
+  use Data::Dumper;
+  print Dumper $newRec->first;
+
+=cut
