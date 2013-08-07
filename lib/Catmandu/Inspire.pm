@@ -10,13 +10,15 @@ Version 0.1
 
 =cut
 
-our $VERSION = '0.1';
+our $VERSION = '0.15';
 
 =head1 MODULES
 
 =over
 
 =item * L<Catmandu::Importer::Inspire>
+
+=item * L<Catmandu::Fix::inspire>
 
 =back
 
