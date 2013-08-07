@@ -1,18 +1,18 @@
-package Catmandu::Fix::inspire_enrich;
+package Catmandu::Fix::inspire;
 
 use Catmandu::Sane;
 use Catmandu::Importer::Inspire;
 
 sub fix {
-  my ( $self, $pub ) = @_;
-  my $inspire = Catmandu::Importer::Inspire->new( doi => $pub->{doi} )->first;
-  my $val;
+  my ( $self, $inspire ) = @_;
+
+  my $rec;
 
   if ( $inspire && $inspire->{record} ) {
     foreach ( @{ $inspire->{record}->{controlfield} } ) {
       if ( $_->{tag} eq "001" and $_->{content} ) {
-        $val->{id}  = $_->{content};
-        $val->{url} = "http://inspirehep.net/record/" . $_->{content};
+        $rec->{id}  = $_->{content};
+        $rec->{url} = "http://inspirehep.net/record/" . $_->{content};
       }
     }
 
@@ -35,13 +35,13 @@ sub fix {
           && $temphash->{value} )
         {
           $temphash->{value} =~ s/oai\:arXiv.org\:(.*)/$1/g;
-          $val->{arxiv}->{id} = $temphash->{value} if $temphash->{value};
-          $val->{arxiv}->{url} = "http://arxiv.org/abs/" . $temphash->{value}
+          $rec->{arxiv}->{id} = $temphash->{value} if $temphash->{value};
+          $rec->{arxiv}->{url} = "http://arxiv.org/abs/" . $temphash->{value}
             if $temphash->{value};
         }
         elsif ( $temphash->{type} and $temphash->{type} eq "CDS" ) {
-          $val->{cern}->{id} = $temphash->{value} if $temphash->{value};
-          $val->{cern}->{url} =
+          $rec->{cern}->{id} = $temphash->{value} if $temphash->{value};
+          $rec->{cern}->{url} =
             "http://cds.cern.ch/record/" . $temphash->{value}
             if $temphash->{value};
         }
@@ -62,13 +62,13 @@ sub fix {
           and $temphash->{value} )
         {
           $temphash->{value} =~ s/oai\:arXiv.org\:(.*)/$1/g;
-          $val->{arxiv}->{id} = $temphash->{value} if $temphash->{value};
-          $val->{arxiv}->{url} = "http://arxiv.org/abs/" . $temphash->{value}
+          $rec->{arxiv}->{id} = $temphash->{value} if $temphash->{value};
+          $rec->{arxiv}->{url} = "http://arxiv.org/abs/" . $temphash->{value}
             if $temphash->{value};
         }
         elsif ( $temphash->{type} and $temphash->{type} eq "CDS" ) {
-          $val->{cern}->{id} = $temphash->{value} if $temphash->{value};
-          $val->{cern}->{url} =
+          $rec->{cern}->{id} = $temphash->{value} if $temphash->{value};
+          $rec->{cern}->{url} =
             "http://cds.cern.ch/record/" . $temphash->{value}
             if $temphash->{value};
         }
@@ -76,5 +76,6 @@ sub fix {
     }
   }
 
-  my $pub = { inspire => $val };
+  return $rec;
+
 }
