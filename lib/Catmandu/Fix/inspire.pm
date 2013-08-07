@@ -1,15 +1,16 @@
 package Catmandu::Fix::inspire;
 
 use Catmandu::Sane;
-use Catmandu::Importer::Inspire;
+use Moo;
+
 
 sub fix {
-  my ( $self, $inspire ) = @_;
+  my ( $self, $pub ) = @_;
 
   my $rec;
 
-  if ( $inspire && $inspire->{record} ) {
-    foreach ( @{ $inspire->{record}->{controlfield} } ) {
+  if ( $pub && $pub->{record} ) {
+    foreach ( @{ $pub->{record}->{controlfield} } ) {
       if ( $_->{tag} eq "001" and $_->{content} ) {
         $rec->{id}  = $_->{content};
         $rec->{url} = "http://inspirehep.net/record/" . $_->{content};
@@ -17,7 +18,7 @@ sub fix {
     }
 
 
-    foreach my $datafield ( @{ $inspire->{record}->{datafield} } ) {
+    foreach my $datafield ( @{ $pub->{record}->{datafield} } ) {
       next unless $datafield->{tag} eq "035";
       if ( ref $datafield->{subfield} eq "ARRAY" ) {
         my $temphash;
@@ -79,3 +80,5 @@ sub fix {
   return $rec;
 
 }
+
+1;
