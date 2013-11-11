@@ -3,8 +3,6 @@ package Catmandu::Fix::inspire;
 use Catmandu::Sane;
 use Moo;
 
-our $VERSION = '0.151';
-
 sub fix {
   my ( $self, $pub ) = @_;
 
