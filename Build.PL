@@ -4,7 +4,7 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     module_name => 'Catmandu::Inspire',
-    dist_version => '0.152',
+    dist_version => '0.2',
     license => 'perl',
     dist_author => [
         'Vitali Peil <vitali.peil at uni-bielefeld.de>'

@@ -3,8 +3,6 @@ package Catmandu::Fix::inspire;
 use Catmandu::Sane;
 use Moo;
 
-our $VERSION = '0.151';
-
 sub fix {
   my ( $self, $pub ) = @_;
 
@@ -23,7 +21,7 @@ sub fix {
       if ($datafield->{tag} eq "024") {
         foreach my $sf ( @{ $datafield->{subfield} } ) {
           if ( $sf->{code} eq 'a' ) {
-            $rec->doi = $sf->{content};
+            $rec->{doi} = $sf->{content};
           }
         }
       }
@@ -89,16 +87,14 @@ sub fix {
 
 }
 
-1;
-
 =head1 NAME
 
 Catmandu::Fix::inspire - a Catmandu Fix, which filters appropriate fields, e.g doi, arxivId, etc.
 
 =head1 SYNOPSIS
 
-  use Catmandu::Fix::inspire;
   use Catmandu::Importer::Inspire;
+  use Catmandu::Fix::inspire;
 
   my $fixer = Catmandu::Fix->new(fixes => ['inspire()']);
   
@@ -113,3 +109,5 @@ Catmandu::Fix::inspire - a Catmandu Fix, which filters appropriate fields, e.g d
   print Dumper $newRec->first;
 
 =cut
+
+1;
