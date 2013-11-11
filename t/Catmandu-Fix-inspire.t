@@ -4,10 +4,10 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Exception;
-use Catmandu::Fix qw(inspire);
+use Catmandu::Fix qw(inspire_extract_id);
 use Catmandu::Importer::Inspire;
 
-my $fixer = Catmandu::Fix->new(fixes => ['inspire()']);
+my $fixer = Catmandu::Fix->new(fixes => ['inspire_extract_id()']);
 
 my $importer = Catmandu::Importer::Inspire->new(
 	format => 'marc', 
