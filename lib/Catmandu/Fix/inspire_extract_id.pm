@@ -1,4 +1,4 @@
-package Catmandu::Fix::inspire;
+package Catmandu::Fix::inspire_extract_id;
 
 use Catmandu::Sane;
 use Moo;
