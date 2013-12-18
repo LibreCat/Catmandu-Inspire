@@ -1,0 +1,4 @@
+Revision history for Catmandu-Inspire
+
+{{$NEXT}}
+	- Dist::Milla instead of Module::Build
