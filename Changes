@@ -1,4 +1,7 @@
 Revision history for Catmandu-Inspire
 
 {{$NEXT}}
+
+v0.23  2013-12-18 17:13:59 CET
 	- Dist::Milla instead of Module::Build
+	- files cleanup

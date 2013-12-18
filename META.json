@@ -49,7 +49,7 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.21",
+   "version" : "v0.23",
    "x_contributors" : [
       "Vitali <vitali.peil@uni-bielefeld.de>",
       "vpeil <vitali.peil@uni-bielefeld.de>"
