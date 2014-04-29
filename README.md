@@ -9,4 +9,4 @@ Catmandu::Inspire - Catmandu modules for working with Inspire data.
 
 # AUTHOR
 
-- Vitali Peil, `<vitali.peil at uni-bielefeld.de>`
+Vitali Peil, `<vitali.peil at uni-bielefeld.de>`
