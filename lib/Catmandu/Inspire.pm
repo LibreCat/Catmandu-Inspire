@@ -3,6 +3,7 @@ package Catmandu::Inspire;
 our $VERSION = 'v0.24';
 
 1;
+
 __END__
 
 =head1 NAME
