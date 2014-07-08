@@ -10,6 +10,18 @@ __END__
 
 Catmandu::Inspire - Catmandu modules for working with Inspire data.
 
+=head1 STATUS
+
+=begin HTML
+
+<p>
+<img src="https://travis-ci.org/LibreCat/Catmandu-Inspire.svg?branch=master" alt="build status" />
+<img src="https://coveralls.io/repos/LibreCat/Catmandu-Inspire/badge.png?branch=master" alt="coverage status" />
+<img src="http://cpants.cpanauthors.org/dist/Catmandu-Inspire.png" alt="kwalitee score" />
+</p>
+
+=end HTML
+
 =head1 MODULES
 
 =over
