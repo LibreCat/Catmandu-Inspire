@@ -28,8 +28,6 @@ Catmandu::Inspire - Catmandu modules for working with Inspire data.
 
 =item * L<Catmandu::Importer::Inspire>
 
-=item * L<Catmandu::Fix::inspire_extract_id>
-
 =back
 
 =head1 AUTHOR

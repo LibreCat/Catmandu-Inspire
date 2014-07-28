@@ -24,14 +24,22 @@ my %FORMAT_MAPPING = (
     'dc'      => 'xd',
 );
 
+my %PATH_MAPPING = (
+    'endnote' => 'record',
+    'nlm'     => 'article',
+    'marc'    => 'record',
+    'dc'      => 'dc:dc',
+);
+
 sub BUILD {
     my $self = shift;
 
     Catmandu::BadVal->throw("Either ID or DOI or a QUERY is required.")
         unless $self->id || $self->doi || $self->query;
 
-    Catmandu::BadVal->throw("Format '$self->fmt' is not allowed. Possible choices are endnote, nlm, marc, dc.")
-        unless exists $FORMAT_MAPPING{$self->fmt};
+    Catmandu::BadVal->throw(
+        "Format '$self->fmt' is not allowed. Possible choices are endnote, nlm, marc, dc."
+    ) unless exists $FORMAT_MAPPING{ $self->fmt };
 }
 
 sub _request {
@@ -39,7 +47,7 @@ sub _request {
 
     my $furl = Furl->new(
         agent   => 'Mozilla/5.0',
-        timeout => 10
+        timeout => 10,
     );
 
     my $res = $furl->get($url);
@@ -51,7 +59,8 @@ sub _request {
 sub _parse {
     my ( $self, $in ) = @_;
 
-    my $xml = Catmandu::Importer::XML->new( file => \$in, path => 'record' );
+    my $path = $PATH_MAPPING{ $self->fmt };
+    my $xml = Catmandu::Importer::XML->new( file => \$in, path => $path );
     return $xml->to_array;
 }
 
@@ -74,16 +83,16 @@ sub _call {
         $url .= '&rg=' . $self->limit;
         $url .= '&action_search=Suchen';
     }
-    
+
     my $res = $self->_request($url);
-    
+
     return $res->{content};
 }
 
 sub _get_record {
     my ($self) = @_;
 
-    my $xml  = $self->_call;
+    my $xml   = $self->_call;
     my $stack = $self->_parse($xml);
     return $stack;
 }
@@ -94,7 +103,7 @@ sub generator {
     return sub {
         state $stack = $self->_get_record;
         return pop @$stack;
-        };
+    };
 }
 
 1;
@@ -112,13 +121,6 @@ sub generator {
     fmt => 'endnote',
   );
 
-  OR
-
-  my %attrs = (
-    query => 'doi:10.1103/PhysRevD.82.112004'
-    fmt => 'marc',
-  );
-
   my $importer = Catmandu::Importer::Inspire->new(%attrs);
 
   my $n = $importer->each(sub {
@@ -126,7 +128,31 @@ sub generator {
     # ...
   });
 
-=cut
+=head1 CONFIGURATION
+
+=over
+
+=item id
+
+Retrieve record by its Inspire ID.
+
+=item doi
+
+Retrieve record by its DOI from Inspire database.
+
+=item query
+
+Get results by an arbitrary query.
+
+=item fmt
+
+Specify the format to be delivered. Default is to 'endnote'. Other formats are 'nlm', 'marc' and 'dc'. 
+
+=item limit
+
+Maximum number of records. Default is to 25.
+
+=back
 
 =head1 SEE ALSO
 
