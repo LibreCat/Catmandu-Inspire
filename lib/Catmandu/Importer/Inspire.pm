@@ -1,7 +1,7 @@
 package Catmandu::Importer::Inspire;
 
 use Catmandu::Sane;
-use XML::LibXML::Simple qw(XMLin);
+use Catmandu::Importer::XML;
 use Furl;
 use Moo;
 
@@ -29,6 +29,9 @@ sub BUILD {
 
     Catmandu::BadVal->throw("Either ID or DOI or a QUERY is required.")
         unless $self->id || $self->doi || $self->query;
+
+    Catmandu::BadVal->throw("Format '$self->fmt' is not allowed. Possible choices are endnote, nlm, marc, dc.")
+        unless exists $FORMAT_MAPPING{$self->fmt};
 }
 
 sub _request {
@@ -45,13 +48,11 @@ sub _request {
     return $res;
 }
 
-sub _hashify {
+sub _parse {
     my ( $self, $in ) = @_;
 
-    my $xs  = XML::LibXML::Simple->new();
-    my $out = $xs->XMLin( $in, );
-
-    return $out;
+    my $xml = Catmandu::Importer::XML->new( file => \$in, path => 'record' );
+    return $xml->to_array;
 }
 
 sub _call {
@@ -73,9 +74,9 @@ sub _call {
         $url .= '&rg=' . $self->limit;
         $url .= '&action_search=Suchen';
     }
-
+    
     my $res = $self->_request($url);
-
+    
     return $res->{content};
 }
 
@@ -83,25 +84,20 @@ sub _get_record {
     my ($self) = @_;
 
     my $xml  = $self->_call;
-    my $hash = $self->_hashify($xml);
-
-    return $hash;
+    my $stack = $self->_parse($xml);
+    return $stack;
 }
 
 sub generator {
     my ($self) = @_;
-    my $return = 1;
 
     return sub {
-
-        # hack to make iterator stop.
-        if ($return) {
-            $return = 0;
-            return $self->_get_record;
-        }
-        return undef;
-    };
+        state $stack = $self->_get_record;
+        return pop @$stack;
+        };
 }
+
+1;
 
 =head1 NAME
 
@@ -113,14 +109,14 @@ sub generator {
 
   my %attrs = (
     id => '1203476',
-    format => 'endnote',
+    fmt => 'endnote',
   );
 
   OR
 
   my %attrs = (
     query => 'doi:10.1103/PhysRevD.82.112004'
-    format => 'marc',
+    fmt => 'marc',
   );
 
   my $importer = Catmandu::Importer::Inspire->new(%attrs);
@@ -134,8 +130,6 @@ sub generator {
 
 =head1 SEE ALSO
 
-L<Catmandu::Iterable>, L<Catmandu::ArXiv>
+L<Catmandu::Iterable>, L<Catmandu::ArXiv>, L<Catmandu::CrossRef>
 
 =cut
-
-1;

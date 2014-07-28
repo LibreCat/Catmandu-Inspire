@@ -1,0 +1,29 @@
+use strict;
+use warnings FATAL => 'all';
+use Test::More;
+use Test::RequiresInternet;;
+
+my $pkg;
+BEGIN {
+    $pkg = 'Catmandu::Importer::Inspire';
+    use_ok $pkg;
+}
+
+my $imp = $pkg->new(
+	doi => '10.1088/1126-6708/2009/03/112',
+);
+is ($imp->count,1, "count ok");
+
+my $imp2 = $pkg->new(
+    fmt => 'marc',
+    id  => '811388',
+);
+is ($imp2->count, 1, "count ok");
+
+my $imp3 = $pkg->new(query => "quark", limit => 50);
+
+is ($imp3->count, 3, "count ok");
+
+
+
+done_testing;
