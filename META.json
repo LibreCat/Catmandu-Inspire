@@ -41,7 +41,7 @@
       },
       "runtime" : {
          "requires" : {
-            "Catmandu" : "0.8014",
+            "Catmandu" : "0.9204",
             "Catmandu::XML" : "0.14",
             "Furl" : "0.41",
             "Moo" : "1.004",
@@ -51,8 +51,7 @@
       "test" : {
          "requires" : {
             "Test::Exception" : "0.32",
-            "Test::More" : "0.88",
-            "Test::RequiresInternet" : "0.02"
+            "Test::More" : "0.88"
          }
       }
    },
