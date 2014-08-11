@@ -24,7 +24,7 @@ my %module_build_args = (
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
-    "Catmandu" => "0.8014",
+    "Catmandu" => "0.9204",
     "Catmandu::XML" => "0.14",
     "Furl" => "0.41",
     "Moo" => "1.004",
@@ -33,8 +33,7 @@ my %module_build_args = (
   "script_files" => [],
   "test_requires" => {
     "Test::Exception" => "0.32",
-    "Test::More" => "0.88",
-    "Test::RequiresInternet" => "0.02"
+    "Test::More" => "0.88"
   }
 );
 
@@ -42,8 +41,7 @@ my %module_build_args = (
 my %fallback_build_requires = (
   "Module::Build" => "0.3601",
   "Test::Exception" => "0.32",
-  "Test::More" => "0.88",
-  "Test::RequiresInternet" => "0.02"
+  "Test::More" => "0.88"
 );
 
 
