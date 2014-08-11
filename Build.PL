@@ -18,7 +18,7 @@ my %module_build_args = (
     "Vitali Peil"
   ],
   "dist_name" => "Catmandu-Inspire",
-  "dist_version" => "0.264",
+  "dist_version" => "0.265",
   "license" => "perl",
   "module_name" => "Catmandu::Inspire",
   "recommends" => {},
